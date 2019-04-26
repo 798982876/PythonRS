@@ -12,7 +12,8 @@ headers = {'Cookie': Cookieinfo,
            'User-Agent': User
            }
 
-rawurl = "https://ladsweb.modaps.eosdis.nasa.gov/archive/orders/501329453/"
+rawurl = "https://ladsweb.modaps.eosdis.nasa.gov/archive/orders/501329921/"
+
 req=urllib.request.Request(rawurl,headers={'Cookie': Cookieinfo,
            'User-Agent': User
            })
@@ -25,14 +26,16 @@ url_cand_html=soup.find_all(id='ftp-directory-list') #定位到存放url的div�
 list_urls=url_cand_html[0].find_all("a") #定位到a标签，其中存放着文件的url
 urls=[]
 
-for i in list_urls[1:145]:#共有文件数
-    urls.append('https://ladsweb.modaps.eosdis.nasa.gov/archive/orders/501329453/'+i.get('href')) #取出链接
+for i in list_urls[1:]:#共有文件数
+    urls.append('https://ladsweb.modaps.eosdis.nasa.gov'+i.get('href')) #取出链接
 
 for i,url in enumerate(urls):
-    print("This is file"+str(i+1)+" downloading! You still have "+str(145-i-1)+" files waiting for downloading!!")
-    file_name = "E:/RSdata/"+url.split('/')[-1]
-    r = requests.get(url, headers=headers)#获得数据
-    with open(file_name, "wb") as code: 
-        code.write(r.content)#写入文件
+        file_name = "E:/RSdata/501329921/"+url.split('/')[-1]
+        print(url)
+        r = requests.get(url, headers=headers)#获得数据
+        with open(file_name, "wb") as code: 
+            code.write(r.content)#写入文件
+
+       
 
 
